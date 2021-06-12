@@ -1,3 +1,4 @@
+
 {% load static %}
 {%  static "images" as baseUrl  %}
 
@@ -71,9 +72,11 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbar3">
                                 {% for cat in categories %}
-                                    <a class="dropdown-item " href="course-grid.html">
-                                        {{cat.name}}
-                                    </a>
+                                <form action="/" method="POST" class="dropdown-item ">
+                                    {% csrf_token %}
+                                        <input type="submit" name="categorie" value={{cat.name}} style="background-color: transparent;
+                                                                                        color: black;" class="dropdown-item ">
+                                </form>    
                                 {% endfor %}
  
                             </div>
