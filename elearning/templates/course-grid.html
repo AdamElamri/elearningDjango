@@ -1,0 +1,92 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{%  block content  %}
+<section class="page-header">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-8">
+        <div class="title-block">
+          <h1>Aspire for more</h1>
+          
+          
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item">
+                Learning keeps you in the lead. Get in-demand skills to impress anyone.
+              </li>
+               <li class="list-inline-item"><img src="{% static 'assets/images/1999ee6d-47cd-42f2-baca-747713a0228b.jpg' %}">
+               </li>
+              
+        </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-padding course">
+    <div class="course-top-wrap">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <p>Showing 1-6 of 8 results</p>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="topbar-search">
+                        <form method="get" action="#">
+                            <input type="text"  placeholder="Search our courses" class="form-control">
+                            <label><i class="fa fa-search"></i></label>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            
+            
+            {%for form in formations%}
+            {% if form.etat%}
+            <div class="col-xl-4 col-lg-4">
+                <div class="course-block">
+                    <div class="course-img">
+                        <img src="{{form.img.url}}" alt="" class="img-fluid">
+                         <div class="course-price2">${{form.price}}</div>   
+                    </div>
+                    
+                    <div class="course-content">
+                        <h4><a href="#">{{form.name}}</a></h4>    
+                        <p>{{form.desc}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {%endfor%}
+             
+
+        <div class="row">
+            <div class="col-lg-12">
+                <nav class="post-navigation text-center">
+                    <ul>
+                      <li class="page-num active" aria-current="page">
+                        <span class="page-url">
+                          1
+                          <span class="sr-only">(current)</span>
+                        </span>
+                      </li>
+                      <li class="page-num"><a class="page-url" href="#">2</a></li>
+                      <li class="page-num"><a class="page-url" href="#">3</a></li>
+                      <li class="page-num"><a class="page-url" href="#"><i class="fa fa-angle-right"></i></a></li>
+                    </ul>
+                  </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+{%  endblock %}
