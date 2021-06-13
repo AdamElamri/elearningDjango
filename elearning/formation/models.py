@@ -15,3 +15,6 @@ class Formation(models.Model):  # will inherit the feature of a model
     etat = models.BooleanField(default=True)  # actived:true
     categorie = models.ForeignKey(
         Categorie, on_delete=models.CASCADE, null=False)
+
+    def __str__(self):
+        return str(self.name)

@@ -6,6 +6,8 @@ from .models import Categorie
 from django.core.paginator import EmptyPage, Paginator
 # Create your views here.
 
+from django.http import JsonResponse
+
 
 def formations(request):
  #   myFilter = FormationFilter()
@@ -44,3 +46,31 @@ def formations(request):
             page = p.page(1)
 
         return render(request, "course-grid.html", {'formations': page, 'categories': categories, 'np': list, 'current': page_num})
+
+
+def search_results(request):
+    if request.is_ajax():
+        res = None
+        formation = request.POST.get('formation')
+
+        qs = Formation.objects.filter(name__icontains=formation)
+
+        if len(qs) > 0 and len(formation) > 0:
+            data = []
+            for position in qs:
+                item = {
+                    'pk': position.pk,
+                    'name': position.name,
+                    'img': str(position.img.url),
+                    'desc': position.desc,
+                    'price': position.price,
+                    'etat': position.etat,
+                    'categorie': position.categorie.name
+                }
+                data.append(item)
+                res = data
+        else:
+            'No courses found...'
+
+        return JsonResponse({'data': res})
+    return JsonResponse({})

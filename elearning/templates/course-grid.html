@@ -32,13 +32,18 @@
                     <p>Showing 1-6 of  results</p>
                 </div>
 
+
+                
                 <div class="col-lg-4">
                     <div class="topbar-search">
-                        <form method="get" action="#">
-                          {{myFilter.form}}
-                            <input type="text"  placeholder="Search our courses" class="form-control">
+                        <form method="POST" action="" id="search-form">
+                            {% csrf_token %}
+                            <input type="text"  placeholder="Search our courses" class="form-control" id="search-input"  >
+                            
                             <label><i class="fa fa-search"></i></label>
-                        </form>
+
+                          </form>
+                          
                     </div>
                 </div>
 
@@ -48,9 +53,8 @@
 
 
     <div class="container">
-        <div class="row">
-            
-            
+      <div class="row"> 
+        <div id="result" class="row">    
             {%for form in formations%}
             {% if form.etat%}
             <div class="col-xl-4 col-lg-4">
@@ -69,7 +73,76 @@
             {% endif %}
 
             {%endfor%}
-             
+          </div>
+            <script type="text/javascript">
+                        
+                        
+              const url= window.location.href
+              const searchForm= document.getElementById('search-form')
+              const searchInput= document.getElementById('search-input')
+              const csrf=document.getElementsByName('csrfmiddlewaretoken')[0].value
+              const result=document.getElementById('result')
+              console.log(result)
+              const rec=result.innerHTML
+              const sendSearchData = (formation)=>{
+                  $.ajax({
+                    type : 'POST',
+                    url : 'search/',
+                    data:{
+                      'csrfmiddlewaretoken':csrf,
+                      'formation':formation,
+                    },
+                    success: (res)=>{
+                      console.log(res.data)
+                      const data =res.data
+                      
+                      
+                      if(Array.isArray(data)){
+                        result.innerHTML ="" 
+                        data.forEach(formation=>{
+                        if(formation.etat)
+                        result.innerHTML += `
+                         <div class="col-xl-4 col-lg-4">
+                          <div class="course-block">
+                              <div class="course-img">
+                                  <img src="${formation.img}" alt="" class="img-fluid">
+                                   <div class="course-price2">$${formation.price}</div>   
+                              </div>
+                              
+                              <div class="course-content">
+                                  <h4><a href="#">${formation.name}</a></h4>    
+                                  <p>${formation.desc}</p>
+                              </div>
+                          </div>
+                      </div>
+                      
+                         
+                         `
+                       }) 
+                      }
+                      else{
+                          
+                        if (searchInput.value.length > 0){
+                          result.innerHTML=`<b>No Courses Found..</b>` 
+                        } else{
+                          result.innerHTML=rec
+                          
+                        }
+                      }
+                    },
+                    error:(err)=>{
+                      console.log(err)
+                    }
+                  })
+              }
+
+              searchInput.addEventListener('keyup',e=>{
+
+                console.log(e.target.value)
+                sendSearchData(e.target.value)
+              })
+              
+            </script>
 
         <div class="row">
             <div class="col-lg-12">
@@ -96,5 +169,6 @@
         </div>
     </div>
 </section>
+
 
 {%  endblock %}
